@@ -9,6 +9,8 @@ class ContentEditor {
             return;
         }
 
+        this.listeners = {}; // Stores event callbacks
+
         this.undoStack = [];
         this.redoStack = [];
         this.maxHistory = 50;
@@ -17,6 +19,26 @@ class ContentEditor {
         this.savedSelectionRange = null;
 
         this.init();
+    }
+
+    // Add Event Emitter methods to the ContentEditor class:
+    on(eventName, callback) {
+        if (!this.listeners[eventName]) {
+            this.listeners[eventName] = [];
+        }
+        this.listeners[eventName].push(callback);
+        return this; // Enable chaining
+    }
+    
+    off(eventName, callback) {
+        if (!this.listeners[eventName]) return;
+        this.listeners[eventName] = this.listeners[eventName].filter(cb => cb !== callback);
+    }
+
+    emit(eventName, data) {
+        if (this.listeners[eventName]) {
+            this.listeners[eventName].forEach(callback => callback.call(this, data));
+        }
     }
 
     init() {
@@ -476,6 +498,25 @@ class ContentEditor {
         this.sourceArea.addEventListener('input', () => {
             this.updateStats();
         });
+
+        // Keydown / Keyup monitoring
+        this.editor.addEventListener('keydown', (e) => {
+            this.emit('key', { event: e, data: this.get() });
+        });
+
+        // Content change / input monitoring
+        const handleContentChange = (e) => {
+            this.updateStats();
+            this.saveState();
+
+            // Emit both 'input' and 'change' events with editor data
+            this.emit('input', { event: e, data: this.get() });
+            this.emit('change', { event: e, data: this.get() });
+        };
+
+        this.editor.addEventListener('input', handleContentChange);
+        this.sourceArea.addEventListener('input', handleContentChange);
+
     }
 
     // --- Stats Calculation ---
