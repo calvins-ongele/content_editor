@@ -1,0 +1,24 @@
+{
+  "name": "content_editor",
+  "version": "1.0.0",
+  "description": "Rich Content Editor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calvins-ongele/content_editor.git"
+  },
+  "keywords": [
+    "content",
+    "editor",
+    "text"
+  ],
+  "author": "calvins-ongele",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calvins-ongele/content_editor/issues"
+  },
+  "homepage": "https://github.com/calvins-ongele/content_editor#readme"
+}
