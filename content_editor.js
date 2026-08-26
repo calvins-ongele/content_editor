@@ -23,6 +23,7 @@ class ContentEditor {
         this.injectStyles();
         this.buildUI();
         this.attachEvents();
+        this.updateStats();
         this.saveState();
     }
 
@@ -110,6 +111,31 @@ class ContentEditor {
                 box-sizing: border-box;
                 outline: none;
                 overflow-y: auto;
+            }
+
+            /* Footer & Stats Bar */
+            .ce-footer {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 16px;
+                padding: 6px 12px;
+                background: #f8f9fa;
+                border-top: 1px solid #ced4da;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                font-size: 12px;
+                color: #6c757d;
+                user-select: none;
+            }
+            .ce-stat-item {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .ce-stat-val {
+                font-weight: 600;
+                color: #495057;
             }
 
             /* Content Elements Styling */
@@ -276,10 +302,10 @@ class ContentEditor {
             <div class="ce-wrapper" id="ce-wrapper">
                 <div class="ce-toolbar">
                     <div class="ce-btn-group">
-                        <button class="ce-btn" data-cmd="bold" title="Bold"><b>B</b></button>
-                        <button class="ce-btn" data-cmd="italic" title="Italic"><i>I</i></button>
-                        <button class="ce-btn" data-cmd="underline" title="Underline"><u>U</u></button>
-                        <button class="ce-btn" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+                        <button type="button" class="ce-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+                        <button type="button" class="ce-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+                        <button type="button" class="ce-btn" data-cmd="underline" title="Underline"><u>U</u></button>
+                        <button type="button" class="ce-btn" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
                     </div>
 
                     <div class="ce-btn-group">
@@ -292,48 +318,54 @@ class ContentEditor {
                     </div>
 
                     <div class="ce-btn-group">
-                        <button class="ce-btn" id="ce-btn-code-inline" title="Inline Code"><code>&lt;/&gt;</code></button>
-                        <button class="ce-btn" id="ce-btn-code-block" title="Code Block">Code Block</button>
-                        <button class="ce-btn" id="ce-btn-callout" title="Container / Callout">Callout</button>
+                        <button type="button" class="ce-btn" id="ce-btn-code-inline" title="Inline Code"><code>&lt;/&gt;</code></button>
+                        <button type="button" class="ce-btn" id="ce-btn-code-block" title="Code Block">Code Block</button>
+                        <button type="button" class="ce-btn" id="ce-btn-callout" title="Container / Callout">Callout</button>
                     </div>
 
                     <div class="ce-btn-group">
-                        <button class="ce-btn" data-cmd="insertOrderedList" title="Numbered List">1.</button>
-                        <button class="ce-btn" data-cmd="insertUnorderedList" title="Bullet List">•</button>
-                        <button class="ce-btn" data-cmd="indent" title="Indent">Tab →</button>
-                        <button class="ce-btn" data-cmd="outdent" title="Decrease Indent">← Tab</button>
+                        <button type="button" class="ce-btn" data-cmd="insertOrderedList" title="Numbered List">1.</button>
+                        <button type="button" class="ce-btn" data-cmd="insertUnorderedList" title="Bullet List">•</button>
+                        <button type="button" class="ce-btn" data-cmd="indent" title="Indent">Tab →</button>
+                        <button type="button" class="ce-btn" data-cmd="outdent" title="Decrease Indent">← Tab</button>
                     </div>
 
                     <div class="ce-btn-group">
-                        <button class="ce-btn" id="ce-btn-link" title="Add Link">Link</button>
-                        <button class="ce-btn" data-cmd="unlink" title="Remove Link">Unlink</button>
-                        <button class="ce-btn" id="ce-btn-image" title="Add Image">Image</button>
-                        <button class="ce-btn" id="ce-btn-video" title="Add Video">Video</button>
+                        <button type="button"  class="ce-btn" id="ce-btn-link" title="Add Link">Link</button>
+                        <button type="button" class="ce-btn" data-cmd="unlink" title="Remove Link">Unlink</button>
+                        <button type="button" class="ce-btn" id="ce-btn-image" title="Add Image">Image</button>
+                        <button type="button" class="ce-btn" id="ce-btn-video" title="Add Video">Video</button>
                     </div>
 
                     <div class="ce-btn-group">
-                        <button class="ce-btn" id="ce-btn-table-add" title="Insert Table">Table</button>
-                        <button class="ce-btn" id="ce-btn-row-add" title="Insert Row">+ Row</button>
-                        <button class="ce-btn" id="ce-btn-row-del" title="Delete Row">- Row</button>
-                        <button class="ce-btn" id="ce-btn-col-add" title="Insert Column">+ Col</button>
-                        <button class="ce-btn" id="ce-btn-col-del" title="Delete Column">- Col</button>
-                        <button class="ce-btn" id="ce-btn-table-del" title="Delete Table">Del Table</button>
+                        <button type="button" class="ce-btn" id="ce-btn-table-add" title="Insert Table">Table</button>
+                        <button type="button" class="ce-btn" id="ce-btn-row-add" title="Insert Row">+ Row</button>
+                        <button type="button" class="ce-btn" id="ce-btn-row-del" title="Delete Row">- Row</button>
+                        <button type="button" class="ce-btn" id="ce-btn-col-add" title="Insert Column">+ Col</button>
+                        <button type="button" class="ce-btn" id="ce-btn-col-del" title="Delete Column">- Col</button>
+                        <button type="button" class="ce-btn" id="ce-btn-table-del" title="Delete Table">Del Table</button>
                     </div>
 
                     <div class="ce-btn-group">
-                        <button class="ce-btn" data-cmd="formatBlock" data-val="blockquote" title="Blockquote">""</button>
-                        <button class="ce-btn" id="ce-btn-source" title="Toggle Source View">Source</button>
-                        <button class="ce-btn" id="ce-btn-max" title="Maximize">⛶</button>
+                        <button type="button" class="ce-btn" data-cmd="formatBlock" data-val="blockquote" title="Blockquote">""</button>
+                        <button type="button" class="ce-btn" id="ce-btn-source" title="Toggle Source View">Source</button>
+                        <button type="button" class="ce-btn" id="ce-btn-max" title="Maximize">⛶</button>
                     </div>
 
                     <div class="ce-btn-group" style="border-right: none;">
-                        <button class="ce-btn" id="ce-btn-undo" title="Undo">↶</button>
-                        <button class="ce-btn" id="ce-btn-redo" title="Redo">↷</button>
+                        <button type="button" class="ce-btn" id="ce-btn-undo" title="Undo">↶</button>
+                        <button type="button" class="ce-btn" id="ce-btn-redo" title="Redo">↷</button>
                     </div>
                 </div>
                 <div class="ce-body">
                     <div class="ce-content" contenteditable="true"></div>
                     <textarea class="ce-source"></textarea>
+                </div>
+                <div class="ce-footer">
+                    <span class="ce-stat-item">Words: <span class="ce-stat-val" id="ce-stat-words">0</span></span>
+                    <span class="ce-stat-item">Chars: <span class="ce-stat-val" id="ce-stat-chars">0</span></span>
+                    <span class="ce-stat-item">(no spaces: <span class="ce-stat-val" id="ce-stat-chars-nospace">0</span>)</span>
+                    <span class="ce-stat-item">Read time: <span class="ce-stat-val" id="ce-stat-readtime">0 min</span></span>
                 </div>
             </div>
 
@@ -342,12 +374,12 @@ class ContentEditor {
                 <div class="ce-modal">
                     <div class="ce-modal-header">
                         <span id="ce-modal-title">Dialog</span>
-                        <button class="ce-modal-close" id="ce-modal-close-btn">&times;</button>
+                        <button type="button" class="ce-modal-close" id="ce-modal-close-btn">&times;</button>
                     </div>
                     <div class="ce-modal-body" id="ce-modal-body"></div>
                     <div class="ce-modal-footer">
-                        <button class="ce-btn" id="ce-modal-cancel">Cancel</button>
-                        <button class="ce-btn" id="ce-modal-submit" style="background:#0d6efd; color:#fff; border:none;">Insert</button>
+                        <button type="button" class="ce-btn" id="ce-modal-cancel">Cancel</button>
+                        <button type="button" class="ce-btn" id="ce-modal-submit" style="background:#0d6efd; color:#fff; border:none;">Insert</button>
                     </div>
                 </div>
             </div>
@@ -357,9 +389,29 @@ class ContentEditor {
         this.sourceArea = this.container.querySelector('.ce-source');
         this.wrapper = this.container.querySelector('#ce-wrapper');
         this.modalOverlay = this.container.querySelector('#ce-modal-overlay');
+
+        // Stats Elements
+        this.statWords = this.container.querySelector('#ce-stat-words');
+        this.statChars = this.container.querySelector('#ce-stat-chars');
+        this.statCharsNoSpace = this.container.querySelector('#ce-stat-chars-nospace');
+        this.statReadTime = this.container.querySelector('#ce-stat-readtime');
     }
 
     attachEvents() {
+        // Save selection whenever cursor moves inside editor
+        ['keyup', 'mouseup', 'focus'].forEach(evt => {
+            this.editor.addEventListener(evt, () => this.saveSelection());
+        });
+        
+        // Prevent modal buttons from clearing selection prematurely on mousedown
+        this.container.querySelectorAll('.ce-btn').forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                if (document.activeElement === this.editor) {
+                    this.saveSelection();
+                }
+            });
+        });
+
         // Command Buttons
         this.container.querySelectorAll('[data-cmd]').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -398,21 +450,62 @@ class ContentEditor {
         this.container.querySelector('#ce-btn-table-del').addEventListener('click', () => this.deleteTable());
 
         // Modal dialog triggers
-        this.container.querySelector('#ce-btn-link').addEventListener('click', () => this.promptAddLink());
-        this.container.querySelector('#ce-btn-image').addEventListener('click', () => this.promptAddImage());
-        this.container.querySelector('#ce-btn-video').addEventListener('click', () => this.promptAddVideo());
+        this.container.querySelector('#ce-btn-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.promptAddLink();
+        });
+        this.container.querySelector('#ce-btn-image').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.promptAddImage();
+        });
+        this.container.querySelector('#ce-btn-video').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.promptAddVideo();
+        });
 
         // Modal Closures
         this.container.querySelector('#ce-modal-close-btn').addEventListener('click', () => this.closeModal());
         this.container.querySelector('#ce-modal-cancel').addEventListener('click', () => this.closeModal());
 
-        // Input state tracking
-        this.editor.addEventListener('input', () => this.saveState());
+        // Input & Stats Tracking
+        this.editor.addEventListener('input', () => {
+            this.updateStats();
+            this.saveState();
+        });
+
+        this.sourceArea.addEventListener('input', () => {
+            this.updateStats();
+        });
+    }
+
+    // --- Stats Calculation ---
+    updateStats() {
+        const text = this.isSourceView 
+            ? this.sourceArea.value 
+            : (this.editor.innerText || this.editor.textContent || '');
+
+        const cleanText = text.trim();
+        
+        // Words count using regex boundary matching
+        const words = cleanText ? cleanText.split(/\s+/).filter(Boolean).length : 0;
+        
+        // Characters with and without spaces
+        const chars = text.length;
+        const charsNoSpace = text.replace(/\s/g, '').length;
+
+        // Reading time assuming 200 words per minute
+        const readTimeMinutes = Math.ceil(words / 200);
+
+        this.statWords.textContent = words.toLocaleString();
+        this.statChars.textContent = chars.toLocaleString();
+        this.statCharsNoSpace.textContent = charsNoSpace.toLocaleString();
+        this.statReadTime.textContent = words > 0 ? `${readTimeMinutes} min` : '0 min';
     }
 
     execCommand(command, value = null) {
         this.editor.focus();
         document.execCommand(command, false, value);
+        this.updateStats();
         this.saveState();
     }
 
@@ -429,6 +522,7 @@ class ContentEditor {
         if (this.undoStack.length > 1) {
             this.redoStack.push(this.undoStack.pop());
             this.editor.innerHTML = this.undoStack[this.undoStack.length - 1];
+            this.updateStats();
         }
     }
 
@@ -437,13 +531,20 @@ class ContentEditor {
             const state = this.redoStack.pop();
             this.undoStack.push(state);
             this.editor.innerHTML = state;
+            this.updateStats();
         }
     }
 
-    saveSelection() {
+   saveSelection() {
         const sel = window.getSelection();
         if (sel.rangeCount > 0) {
-            this.savedSelectionRange = sel.getRangeAt(0);
+            const range = sel.getRangeAt(0);
+            // Ensure selection belongs to the editor body before saving
+            if (this.editor.contains(range.commonAncestorContainer)) {
+                this.savedSelectionRange = range.cloneRange();
+            } else {
+                this.savedSelectionRange = null;
+            }
         }
     }
 
@@ -455,22 +556,48 @@ class ContentEditor {
         }
     }
 
-    insertNodeAtCaret(node) {
+   insertNodeAtCaret(node) {
+        this.restoreSelection(); 
         this.editor.focus();
-        this.restoreSelection();
+
         const sel = window.getSelection();
+        let inserted = false;
+
         if (sel.rangeCount > 0) {
             const range = sel.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode(node);
-            range.collapse(false);
-        } else {
-            this.editor.appendChild(node);
+            
+            // Strictly verify insertion target is inside .ce-content
+            if (this.editor.contains(range.commonAncestorContainer)) {
+                range.deleteContents();
+                range.insertNode(node);
+                
+                // Move cursor directly after the inserted node
+                range.setStartAfter(node);
+                range.setEndAfter(node);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                inserted = true;
+            }
         }
+
+        // Fallback: strictly append to the editor element body, never parent containers
+        if (!inserted) { 
+            
+            this.editor.appendChild(node); 
+            // Move selection range to end of editor content instead of failing it...
+            const newRange = document.createRange();
+            newRange.selectNodeContents(this.editor);
+            newRange.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(newRange);
+        }
+ 
+        this.saveSelection();
+        this.updateStats();
         this.saveState();
     }
 
-    // --- Simplified Public API ---
+    // --- Public API ---
     get() {
         return this.isSourceView ? this.sourceArea.value : this.editor.innerHTML;
     }
@@ -478,6 +605,7 @@ class ContentEditor {
     set(html) {
         this.editor.innerHTML = html;
         this.sourceArea.value = html;
+        this.updateStats();
         this.saveState();
     }
 
@@ -490,6 +618,7 @@ class ContentEditor {
             code.className = 'ce-inline-code';
             code.appendChild(range.extractContents());
             range.insertNode(code);
+            this.updateStats();
             this.saveState();
         }
     }
@@ -532,12 +661,13 @@ class ContentEditor {
             div.textContent = 'Note or callout message goes here...';
             this.insertNodeAtCaret(div);
         }
+        this.updateStats();
         this.saveState();
     }
 
     // --- Custom Modal Management ---
     openModal(title, fieldsHTML, onSubmit) {
-        this.saveSelection();
+        //this.saveSelection();
         this.container.querySelector('#ce-modal-title').textContent = title;
         const body = this.container.querySelector('#ce-modal-body');
         body.innerHTML = fieldsHTML;
@@ -553,6 +683,10 @@ class ContentEditor {
         });
 
         this.modalOverlay.classList.add('ce-active');
+
+        // Auto focus first field without breaking savedSelectionRange
+        const firstInput = body.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
     }
 
     closeModal() {
@@ -644,7 +778,9 @@ class ContentEditor {
             if (width) img.style.width = width;
             if (height) img.style.height = height;
 
-            this.insertNodeAtCaret(img);
+            const wrapper = document.createElement('p');
+            wrapper.appendChild(img);
+            this.insertNodeAtCaret(wrapper);
         });
     }
 
@@ -683,7 +819,9 @@ class ContentEditor {
             iframe.frameBorder = '0';
             iframe.allowFullscreen = true;
 
-            this.insertNodeAtCaret(iframe);
+            const wrapper = document.createElement('p');
+            wrapper.appendChild(iframe);
+            this.insertNodeAtCaret(wrapper);
         });
     }
 
@@ -751,6 +889,7 @@ class ContentEditor {
             const newCell = newRow.insertCell();
             newCell.textContent = 'Cell';
         }
+        this.updateStats();
         this.saveState();
     }
 
@@ -760,6 +899,7 @@ class ContentEditor {
         const row = cell.parentElement;
         const table = this.findParentTable();
         table.deleteRow(row.rowIndex);
+        this.updateStats();
         this.saveState();
     }
 
@@ -772,6 +912,7 @@ class ContentEditor {
             const newCell = table.rows[i].insertCell(colIndex + 1);
             newCell.textContent = 'Cell';
         }
+        this.updateStats();
         this.saveState();
     }
 
@@ -783,6 +924,7 @@ class ContentEditor {
         for (let i = 0; i < table.rows.length; i++) {
             table.rows[i].deleteCell(colIndex);
         }
+        this.updateStats();
         this.saveState();
     }
 
@@ -790,6 +932,7 @@ class ContentEditor {
         const table = this.findParentTable();
         if (table) {
             table.remove();
+            this.updateStats();
             this.saveState();
         }
     }
@@ -800,17 +943,20 @@ class ContentEditor {
             this.editor.innerHTML = this.sourceArea.value;
             this.sourceArea.style.display = 'none';
             this.editor.style.display = 'block';
+            this.updateStats();
             this.saveState();
         } else {
             this.sourceArea.value = this.editor.innerHTML;
             this.editor.style.display = 'none';
             this.sourceArea.style.display = 'block';
+            this.updateStats();
         }
         this.isSourceView = !this.isSourceView;
     }
 
+    //toggle
     toggleMaximize() {
         this.isMaximized = !this.isMaximized;
         this.wrapper.classList.toggle('ce-maximized', this.isMaximized);
     }
-}
+} 
