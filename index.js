@@ -3,6 +3,4 @@ const editor = new ContentEditor({container: '#my-editor' });
 editor.set('<p>Welcome! Try out <code>inline code</code> or insert a callout block.</p>');
 
 // get content
-const content = editor.get();
-
-editor.set(`<p>Hello word`);
+const content = editor.get(); 
