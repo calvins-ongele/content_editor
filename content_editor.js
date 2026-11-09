@@ -3,6 +3,7 @@ class ContentEditor {
         this.container = typeof options.container === 'string' 
             ? document.querySelector(options.container) 
             : options.container;
+        this.background = options.background || '#fff';
 
         if (!this.container) {
             console.error('ContentEditor: Target container not found.');
@@ -56,7 +57,7 @@ class ContentEditor {
             .ce-wrapper {
                 border: 1px solid #ced4da;
                 border-radius: 8px;
-                background: #fff;
+                background: ${this.background};
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.05);
                 display: flex;
